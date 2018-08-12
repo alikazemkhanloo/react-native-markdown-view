@@ -5,6 +5,7 @@ import React from 'react'
 import {
   Image,
   Text,
+  Animated,
   View,
 } from 'react-native'
 
@@ -70,9 +71,9 @@ function renderTableCell(cell, row, column, rowCount, columnCount, output, state
   }
 
   return <Cell rowId={row} id={column} key={column} style={cellStyle}>
-    <Text style={contentStyle}>
+    <Animated.Text style={contentStyle}>
       {output(cell, state)}
-    </Text>
+    </Animated.Text>
   </Cell>
 }
 
@@ -91,9 +92,9 @@ function paragraphRenderer() {
 
 function textContentRenderer(styleName, styleName2) {
   return (node: InlineContentNode, output: OutputFunction, state: RenderState, styles: RenderStyles) => (
-    <Text key={state.key} style={styleName2 ? [styles[styleName], styles[styleName2]] : styles[styleName]}>
+    <Animated.Text key={state.key} style={styleName2 ? [styles[styleName], styles[styleName2]] : styles[styleName]}>
       {typeof node.content === 'string' ? node.content : output(node.content, state)}
-    </Text>
+    </Animated.Text>
   )
 }
 
@@ -119,9 +120,9 @@ function paddedSize(size, style) {
 export default Object.freeze({
   blockQuote: textContentRenderer('blockQuote'),
   br: (node: EmptyNode, output: OutputFunction, state: RenderState, styles: RenderStyles) => (
-    <Text key={state.key} style={styles.br}>
+    <Animated.Text key={state.key} style={styles.br}>
       {'\n\n'}
-    </Text>
+    </Animated.Text>
   ),
   codeBlock: textContentRenderer('codeBlock'),
   del: textContentRenderer('del'),
@@ -136,9 +137,9 @@ export default Object.freeze({
   inlineCode: textContentRenderer('inlineCode'),
   link: (node: LinkNode, output: OutputFunction, state: RenderState, styles: RenderStyles) => {
     const onPress = state.onLinkPress
-    return <Text key={state.key} style={styles.link} onPress={onPress ? () => onPress(node.target) : null}>
+    return <Animated.Text key={state.key} style={styles.link} onPress={onPress ? () => onPress(node.target) : null}>
       {typeof node.content === 'string' ? node.content : output(node.content, state)}
-    </Text>
+    </Animated.Text>
   },
   list: (node: ListNode, output: OutputFunction, state: RenderState, styles: RenderStyles) => (
     <View key={state.key} style={styles.list}>
@@ -146,23 +147,23 @@ export default Object.freeze({
         <View key={i} style={styles.listItem}>
           {
             node.ordered ?
-              <Text style={styles.listItemNumber}>{`${i + 1}.`}</Text>
+              <Animated.Text style={styles.listItemNumber}>{`${i + 1}.`}</Animated.Text>
               :
-              <Text style={styles.listItemBullet}>
+              <Animated.Text style={styles.listItemBullet}>
                 {styles.listItemBullet && styles.listItemBullet.content ? styles.listItemBullet.content : '\u2022'}
-              </Text>
+              </Animated.Text>
           }
-          <Text style={node.ordered ? styles.listItemOrderedContent : styles.listItemUnorderedContent}>
+          <Animated.Text style={node.ordered ? styles.listItemOrderedContent : styles.listItemUnorderedContent}>
             {output(item, state)}
-          </Text>
+          </Animated.Text>
         </View>
       ))}
     </View>
   ),
   newline: (node: EmptyNode, output: OutputFunction, state: RenderState, styles: RenderStyles) => (
-    <Text key={state.key} style={styles.newline}>
+    <Animated.Text key={state.key} style={styles.newline}>
       {'\n'}
-    </Text>
+    </Animated.Text>
   ),
   paragraph: paragraphRenderer(),
   strong: textContentRenderer('strong'),
